@@ -14,17 +14,26 @@ export default function TemporalAnalytics() {
     // Mock data for the chart based on current blocks and transformations
     const chartData = useMemo(() => {
         const data = [];
+        // Calculate current real base metrics from historicalQuery or chain state
+        const baseComplexity = historicalQuery ? historicalQuery.verificationSteps : (blocks.length * difficulty);
+        const baseLatency = historicalQuery ? historicalQuery.latency : (blocks.length * 10);
+
         for (let i = 0; i < 11; i++) {
             const age = i * 20; // 0, 20, 40... 200 years
+
+            // Age factor: Latency increases with storage age, complexity increases slightly with maintenance
+            const ageLatencyFactor = age * 1.2;
+            const ageComplexityFactor = Math.floor(age / 50);
+
             data.push({
                 age: age,
-                latency: (age * 1.5) + (Math.random() * 5),
-                complexity: (age * 0.8) + 10,
-                availability: Math.max(100 - (age * 0.1), 85)
+                latency: Math.round(baseLatency + ageLatencyFactor),
+                complexity: baseComplexity + ageComplexityFactor,
+                availability: Math.max(100 - (age * 0.05), 92)
             });
         }
         return data;
-    }, [blocks.length]);
+    }, [blocks.length, difficulty, historicalQuery]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

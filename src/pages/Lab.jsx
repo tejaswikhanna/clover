@@ -310,7 +310,20 @@ export default function Lab() {
                                             </button>
                                         </div>
                                         {searchResult.status && <div style={{ color: '#f59e0b' }}><strong>Status:</strong> {searchResult.status}</div>}
-                                        {searchResult.blockIndex !== undefined && <div><strong>In Block:</strong> #{searchResult.blockIndex}</div>}
+                                        {searchResult.blockIndex !== undefined && <div style={{ marginBottom: '4px' }}><strong>In Block:</strong> #{searchResult.blockIndex}</div>}
+
+                                        {historicalQuery && historicalQuery.txId === searchResult.op.id && (
+                                            <div style={{ marginTop: '12px', padding: '10px', background: '#dcfce7', borderRadius: '6px', border: '1px solid #86efac' }}>
+                                                <div style={{ fontWeight: 600, color: '#166534', marginBottom: '4px', fontSize: '0.75rem', textTransform: 'uppercase' }}>Lineage Verification Result</div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem' }}>
+                                                    <div>🏃 <strong>Steps:</strong> {historicalQuery.verificationSteps}</div>
+                                                    <div>🛡️ <strong>Hops:</strong> {historicalQuery.trustHops}</div>
+                                                    <div>⏱️ <strong>Latency:</strong> {historicalQuery.latency}ms</div>
+                                                    <div>✅ <strong>Status:</strong> Verified</div>
+                                                </div>
+                                            </div>
+                                        )}
+
                                         <div style={{ marginTop: '8px' }}>
                                             <strong>Payload:</strong>
                                             <pre style={{ margin: '4px 0 0 0', padding: '8px', background: '#fff', borderRadius: '4px', overflowX: 'auto' }}>
