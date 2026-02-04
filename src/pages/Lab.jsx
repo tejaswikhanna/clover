@@ -16,7 +16,19 @@ export default function Lab() {
     const [searchId, setSearchId] = useState('');
     const [searchResult, setSearchResult] = useState(null);
     const [showTemporal, setShowTemporal] = useState(false);
-    // ... existing switch/render code ...
+
+    const operationTypes = ['Identity Claim', 'Document Sign', 'Vote', 'Data Log'];
+
+    const handleInputChange = (key, value) => {
+        setFormData(prev => ({ ...prev, [key]: value }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        submitOperation(opType, creator, formData);
+        setFormData({}); // Reset
+    };
+
     const renderPayloadInputs = () => {
         switch (opType) {
             case 'Identity Claim':

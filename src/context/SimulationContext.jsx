@@ -23,6 +23,17 @@ export function SimulationProvider({ children }) {
     const [virtualYear, setVirtualYear] = useState(2026);
     const [historicalQuery, setHistoricalQuery] = useState(null);
 
+    const opCountRef = useRef(0);
+
+    // TPS Calculation
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTps(opCountRef.current);
+            opCountRef.current = 0;
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
     const addLog = (message, agentId = 'SYSTEM') => {
         setLogs(prev => [{
             id: Date.now() + Math.random(),
