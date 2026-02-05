@@ -18,6 +18,7 @@ export function SimulationProvider({ children }) {
     const [isAutoMining, setIsAutoMining] = useState(false);
     const [latency, setLatency] = useState(0); // in ms
     const [tps, setTps] = useState(0);
+    const [miningTime, setMiningTime] = useState(0);
 
     // Temporal & Lineage State
     const [virtualYear, setVirtualYear] = useState(2026);
@@ -63,18 +64,31 @@ export function SimulationProvider({ children }) {
         if (isMining) return;
 
         setIsMining(true);
-        addLog(`Consensus search started (Latency: ${latency}ms)...`, "MINER");
+        addLog(`Consensus search started (Network Latency: ${latency}ms)...`, "MINER");
 
-        // Reduced artificial delay to simulate PoW without making it feel sluggish
-        await new Promise(resolve => setTimeout(resolve, (250 * difficulty) + latency));
+        // PoW Simulation: Delay scales exponentially with difficulty
+        // Base delay: 200ms
+        // Difficulty Factor: 2^difficulty
+        // Random Factor: 0.8 to 1.5
+        const startTime = Date.now();
+        const baseDelay = 200;
+        const difficultyFactor = Math.pow(2, difficulty);
+        const randomFactor = 0.8 + (Math.random() * 0.7);
+        const simulatedWorkTime = Math.round(baseDelay * difficultyFactor * randomFactor);
+
+        const totalDelay = simulatedWorkTime + latency;
+
+        await new Promise(resolve => setTimeout(resolve, totalDelay));
 
         chainRef.current.difficulty = difficulty;
         const newBlock = chainRef.current.mineMempool();
 
         if (newBlock) {
+            const actualTime = Date.now() - startTime;
+            setMiningTime(actualTime);
             setBlocks([...chainRef.current.chain]);
             setMempool([]);
-            addLog(`💎 Block #${newBlock.index} indexed [ID: ${newBlock.blockId}]. Reward: ${miningReward}`, "MINER");
+            addLog(`💎 Block #${newBlock.index} indexed in ${actualTime}ms. Reward: ${miningReward}`, "MINER");
         }
 
         setIsMining(false);
@@ -156,7 +170,7 @@ export function SimulationProvider({ children }) {
             isAutoMining, setIsAutoMining, resetChain,
             latency, setLatency, tps, trigger51Attack,
             virtualYear, setVirtualYear, performUpgrade, performSnapshot,
-            verifyHistoricalTx, historicalQuery
+            verifyHistoricalTx, historicalQuery, miningTime
         }}>
             {children}
         </SimulationContext.Provider>

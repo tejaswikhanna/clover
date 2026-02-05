@@ -7,7 +7,8 @@ export default function Lab() {
     const {
         blocks, mempool, logs, difficulty, setDifficulty,
         submitOperation, mineManual, isMining, getOperationDetails,
-        latency, tps, trigger51Attack, verifyHistoricalTx, historicalQuery
+        latency, tps, trigger51Attack, verifyHistoricalTx, historicalQuery,
+        miningTime
     } = useSimulation();
 
     const [opType, setOpType] = useState('Identity Claim');
@@ -144,9 +145,10 @@ export default function Lab() {
                     </button>
                     <div className="header-metrics" style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>NETWORK METRICS</div>
-                        <div style={{ display: 'flex', gap: '12px', marginTop: '4px', fontSize: '0.85rem' }}>
+                        <div style={{ display: 'flex', gap: '16px', marginTop: '4px', fontSize: '0.85rem' }}>
                             <span title="Transactions Per Second">📊 {tps} TPS</span>
-                            <span title="Network Latency">📡 {latency}ms</span>
+                            <span title="Last Block Mining Time">⛏️ {miningTime}ms</span>
+                            <span title="Network Propagation Latency">📡 {latency}ms</span>
                         </div>
                     </div>
                 </div>
