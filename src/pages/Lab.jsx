@@ -129,12 +129,12 @@ export default function Lab() {
         <div style={{ padding: '1.5rem', maxWidth: '1400px', margin: '0 auto' }}>
 
             {/* HEADER WITH HEARTBEAT & METRICS */}
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <div>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+                <div style={{ minWidth: '250px' }}>
                     <h1 style={{ margin: 0, fontSize: '1.8rem' }}>Clover Research Lab</h1>
                     <p style={{ color: '#64748b', margin: '4px 0 0 0' }}>Agent-Based Blockchain Simulation Environment</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
                     <button
                         onClick={() => setShowTemporal(!showTemporal)}
                         className="btn-primary"
@@ -142,7 +142,7 @@ export default function Lab() {
                     >
                         <History size={18} /> {showTemporal ? 'Mining Lab' : 'Temporal Analytics'}
                     </button>
-                    <div style={{ textAlign: 'right' }}>
+                    <div className="header-metrics" style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>NETWORK METRICS</div>
                         <div style={{ display: 'flex', gap: '12px', marginTop: '4px', fontSize: '0.85rem' }}>
                             <span title="Transactions Per Second">📊 {tps} TPS</span>
@@ -152,7 +152,7 @@ export default function Lab() {
                 </div>
             </header>
 
-            <div style={{ display: 'grid', gridTemplateColumns: showTemporal ? '1fr 400px' : '1fr 1fr 350px', gap: '1.5rem' }}>
+            <div className={`grid-main ${showTemporal ? 'grid-temporal' : 'grid-lab'}`}>
 
                 {showTemporal ? (
                     <TemporalAnalytics />

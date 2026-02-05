@@ -2,20 +2,11 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { LayoutDashboard, Settings } from 'lucide-react';
 
-export function Sidebar() {
+export function Sidebar({ isOpen, setIsOpen }) {
     const navItems = [
         { icon: LayoutDashboard, label: 'Research Lab', path: '/' },
         { icon: Settings, label: 'Settings', path: '/settings' },
     ];
-
-    const sidebarStyle = {
-        width: '260px',
-        backgroundColor: '#fff',
-        borderRight: '1px solid #e2e8f0',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '1.5rem',
-    };
 
     const linkStyle = ({ isActive }) => ({
         display: 'flex', alignItems: 'center', gap: '0.75rem',
@@ -28,12 +19,12 @@ export function Sidebar() {
     });
 
     return (
-        <aside style={sidebarStyle}>
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <LayoutDashboard size={24} /> Clover
             </div>
             <nav style={{ flex: 1 }}>{navItems.map(item => (
-                <NavLink key={item.path} to={item.path} style={linkStyle}>
+                <NavLink key={item.path} to={item.path} style={linkStyle} onClick={() => setIsOpen(false)}>
                     <item.icon size={20} /> {item.label}
                 </NavLink>
             ))}</nav>
@@ -42,12 +33,28 @@ export function Sidebar() {
 }
 
 export function MainLayout() {
+    const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
     return (
-        <div style={{ display: 'flex', height: '100vh', width: '100vw', background: '#f8fafc', overflow: 'hidden' }}>
-            <Sidebar />
-            <main style={{ flex: 1, overflowY: 'auto' }}>
+        <div className="layout-container">
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+            <main className="main-content">
+                {/* Mobile Header Toggle */}
+                <div style={{ padding: '0.75rem 1.5rem', borderBottom: '1px solid #e2e8f0', background: '#fff', display: 'flex', alignItems: 'center', gap: '1rem' }} className="mobile-only">
+                    <button onClick={() => setIsSidebarOpen(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                        <LayoutDashboard size={24} color="#10b981" />
+                    </button>
+                    <span style={{ fontWeight: 600 }}>Clover</span>
+                </div>
                 <Outlet />
             </main>
+            {/* Overlay */}
+            {isSidebarOpen && (
+                <div
+                    onClick={() => setIsSidebarOpen(false)}
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 40 }}
+                />
+            )}
         </div>
     );
 }

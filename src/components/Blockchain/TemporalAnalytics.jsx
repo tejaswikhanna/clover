@@ -8,7 +8,7 @@ import { Clock, History, Milestone } from 'lucide-react';
 export default function TemporalAnalytics() {
     const {
         virtualYear, setVirtualYear, historicalQuery,
-        performUpgrade, performSnapshot, blocks
+        performUpgrade, performSnapshot, blocks, difficulty
     } = useSimulation();
 
     // Mock data for the chart based on current blocks and transformations
@@ -67,18 +67,18 @@ export default function TemporalAnalytics() {
                     <span>CENTURY II (2226)</span>
                 </div>
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '1.5rem' }}>
-                    <button onClick={performUpgrade} className="btn-primary" style={{ flex: 1, fontSize: '0.8rem', background: '#8b5cf6' }}>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                    <button onClick={performUpgrade} className="btn-primary" style={{ flex: '1 1 150px', fontSize: '0.8rem', background: '#8b5cf6' }}>
                         <Milestone size={14} style={{ marginRight: '4px' }} /> Upgrade Crypto
                     </button>
-                    <button onClick={performSnapshot} className="btn-primary" style={{ flex: 1, fontSize: '0.8rem', background: '#06b6d4' }}>
+                    <button onClick={performSnapshot} className="btn-primary" style={{ flex: '1 1 150px', fontSize: '0.8rem', background: '#06b6d4' }}>
                         <History size={14} style={{ marginRight: '4px' }} /> Take Snapshot
                     </button>
                 </div>
             </div>
 
             {/* METRICS GRID */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
                 <div className="card" style={{ padding: '1rem' }}>
                     <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>QUERY LATENCY</div>
                     <div style={{ fontSize: '1.5rem', fontWeight: 700, margin: '4px 0', color: '#ef4444' }}>
